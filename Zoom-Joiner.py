@@ -190,6 +190,8 @@ def join_calls():
         keyboard.press_and_release('enter')
         sleep(61)                                                               # so the same meeting isn't joined again
 
+        
+print("---------------------------- Zoom Joiner ----------------------------\n")
 
 # start the program
 while True:
