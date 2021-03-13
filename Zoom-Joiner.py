@@ -63,7 +63,7 @@ def add_lecture():
         join_time = input("Time (\"hh:mm\", 24h clock) to join the zoom call:\n>")
         join_date = input(f"Select weekday: ({weekdays[0]}:0, {weekdays[1]}:1, {weekdays[2]}:2, {weekdays[3]}:3, {weekdays[4]}:4, {weekdays[5]}:5, {weekdays[6]}:6)\n>")
         join_link = input("Paste the Zoom link here:\n>")
-        file = open("./data.txt", "a")
+        file = open("./zoom-joiner-data.txt", "a")
         file.write(f"{join_name},{join_time},{join_date},{join_link}\n")
         file.close()
         print(f"Added zoom call \"{join_name}\".")
@@ -74,7 +74,7 @@ def add_lecture():
 
 # lists data and returns a list with the lines
 def list_data():
-    f = open("./data.txt", "r")
+    f = open("./zoom-joiner-data.txt", "r")
     lines = f.readlines()
     f.close()
     i = 0
@@ -97,7 +97,7 @@ def remove_calls():
         if choice > len(lines) - 1 or choice < 0:
             print("This choice is not in range.")
             continue
-        f = open("./data.txt", "w")
+        f = open("./zoom-joiner-data.txt", "w")
         for i in range(len(lines)):                                             # write back to file
             if i == choice:
                 continue
@@ -111,7 +111,7 @@ def remove_calls():
 
 # function returning the next upcoming call as a list with the properties of that call
 def next_call():
-    file = open("./data.txt", "r")
+    file = open("./zoom-joiner-data.txt", "r")
     calls = file.readlines()
     file.close()
 
