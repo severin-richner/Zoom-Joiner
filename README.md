@@ -13,6 +13,7 @@ Instructions:
 2)	install python packages via Command Line:	pip install win32gui keyboard
 
 3)	Make sure your standart Browser has pop-ups enabled. (for opening Zoom via link)
+	
 	(should work fine with: Chrome, Brave, Edge)
 
 Done!
@@ -23,6 +24,7 @@ Just open/run the "Zoom-Joiner.py" file with python.
 Sidenote: If you don't know the link for the Zoom meeting, the usual format is:
 
 https://zoom.us/j/{Meeting ID}
+
 https://zoom.us/j/{Meeting ID}?pwd={Password}
 
 
