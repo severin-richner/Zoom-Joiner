@@ -10,9 +10,7 @@ The script saves the meetings and assumes these are repeated weekly. Joining is 
 
 1)	install python (version 3.8 or newer) and the Zoom application
 
-	[Python](https://www.python.org/downloads/) (make sure to select "Add Python X to PATH")
-
-	[Zoom](https://zoom.us/support/download)
+	[Python](https://www.python.org/downloads/) (make sure to select "Add Python X to PATH"), [Zoom](https://zoom.us/support/download)
 	
 
 2)	install python packages via Command Line
@@ -23,18 +21,12 @@ The script saves the meetings and assumes these are repeated weekly. Joining is 
 
 	(should work fine with: Chrome, Brave, Edge)
 
-
 Done! Just open/run the "Zoom-Joiner.py" file with python.
-
-
-
 
 #### Sidenote: If you don't know the link for the Zoom meeting, the usual format is:
 
 https://zoom.us/j/{Meeting ID}
 
 https://zoom.us/j/{Meeting ID}?pwd={Password}
-
-
 
 Created by Severin Richner
