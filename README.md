@@ -1,6 +1,6 @@
 # Zoom-Joiner
 
-(only works on Windows)
+(only works on Windows, use at own risk)
 
 This Script automatically joins Zoom meetings given a Weekday and a time. No Account needed. 
 The Script saves the Meetings and assumes these are repeated weekly. Joining is done using the Zoom meeting link and uses the default browser.
