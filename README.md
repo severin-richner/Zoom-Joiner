@@ -6,7 +6,7 @@ This Script automatically joins Zoom meetings given a Weekday and a time. No Acc
 The Script saves the Meetings and assumes these are repeated weekly. Joining is done using the Zoom meeting link and uses the default browser.
 
 
-##Instructions:
+## Instructions:
 
 1)	Install python (version 3.8 or newer) and the Zoom application.
 
@@ -28,7 +28,7 @@ Done!
 Just open/run the "Zoom-Joiner.py" file with python.
 
 
-Sidenote: If you don't know the link for the Zoom meeting, the usual format is:
+#### Sidenote: If you don't know the link for the Zoom meeting, the usual format is:
 
 https://zoom.us/j/{Meeting ID}
 
