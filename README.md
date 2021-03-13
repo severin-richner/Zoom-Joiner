@@ -25,8 +25,6 @@ Done! Just open/run the "Zoom-Joiner.py" file with python.
 
 #### Sidenote: If you don't know the link for the Zoom meeting, the usual format is:
 
-https://zoom.us/j/{Meeting ID}
-
-https://zoom.us/j/{Meeting ID}?pwd={Password}
+_https://zoom.us/j/{MeetingID}_ or _https://zoom.us/j/{MeetingID}?pwd={Password}_
 
 Created by Severin Richner
