@@ -41,6 +41,7 @@ def focus_on(name):
             try:
                 win32gui.ShowWindow(w, 6)
                 win32gui.ShowWindow(w, 9)
+                sleep(4)
                 win32gui.SetForegroundWindow(w)
                 return 1
             except Exception as e:
@@ -149,9 +150,13 @@ def next_call():
 def to_sleep(next_time):
     now = datetime.now().strftime("%H:%M:%S")
     h_to_sleep = int(next_time[:2]) - int(now[:2])
+    if h_to_sleep < 0:
+        return 0                                                # late entry, hour missed
     if int(next_time[3:]) >= int(now[3:5]):
         m_to_sleep = int(next_time[3:]) - int(now[3:5])
     else:
+        if h_to_sleep == 0:                                     # late entry, same hour, minutes missed
+            return 0
         m_to_sleep = int(next_time[3:]) + 60 - int(now[3:5])
     s_to_sleep = 60 - int(now[6:])
     return s_to_sleep + 60 * (60 * h_to_sleep + m_to_sleep - 1)  # -1 because of the s_to_sleep
@@ -180,7 +185,6 @@ def join_calls():
         print("Joining... (Intervention with keyboard/mouse can lead to problems.)\n\a")
         wb = webbrowser.get()
         wb.open_new(next[3])
-        sleep(2)
         res = focus_on("Launch Meeting - Zoom")
         if res == 0:
             sleep(61)
@@ -188,9 +192,9 @@ def join_calls():
         keyboard.press_and_release('tab')                                       # accept to open in zoom
         keyboard.press_and_release('tab')
         keyboard.press_and_release('enter')
-        sleep(61)                                                               # so the same meeting isn't joined again
+        sleep(57)                                                               # so the same meeting isn't joined again
 
-        
+
 print("---------------------------- Zoom Joiner ----------------------------\n")
 
 # start the program
@@ -205,6 +209,8 @@ while True:
     elif start == "l":
         list_data()
         print("")
+    elif start == "exit":
+        break
     elif start == "":
         join_calls()
         break
