@@ -17,7 +17,7 @@ The script saves the meetings and assumes these are repeated weekly. Joining is 
 
 	> pip install pywin32 keyboard
 
-3)	make sure your standart Browser has pop-ups enabled (for opening Zoom via link)
+3)	make sure your standard Browser has pop-ups enabled (for opening Zoom via link)
 
 	(should work fine with: Chrome, Brave, Edge)
 
