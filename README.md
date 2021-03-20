@@ -2,7 +2,7 @@
 
 (only works on Windows)
 
-This script automatically joins Zoom meetings given a Weekday and a time. No account needed. 
+This script automatically joins Zoom meetings given a weekday and a time. No account needed. 
 The script saves the meetings and assumes these are repeated weekly. Joining is done using the Zoom meeting link and uses the default browser.
 
 
