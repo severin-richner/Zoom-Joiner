@@ -1,9 +1,6 @@
-import webbrowser
+import webbrowser, datetime, keyboard, win32gui, os, winshell
 from time import sleep
-from datetime import datetime
-import keyboard
-import win32gui
-from os import system
+from win32com.client import Dispatch
 
 
 weekdays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
@@ -71,7 +68,7 @@ def sort_file():
 def add_lecture():
     global weekdays
     while True:
-        system('cls')
+        os.system('cls')
         join_name = input("Name of the lecture/meeting:\n>")
         if len(join_name) > 30:
             print("Name is too long.\n")
@@ -106,7 +103,7 @@ def add_lecture():
 
 # lists data and returns a list with the lines
 def list_data():
-    system('cls')
+    os.system('cls')
     f = open("./zoom-joiner-data.txt", "r")
     lines = f.readlines()
     f.close()
@@ -125,7 +122,7 @@ def list_data():
 def remove_calls():
     global weekdays
     while True:
-        system('cls')
+        os.system('cls')
         lines = list_data()
         choice = int(input("\nChoose a call to delete:\n>"))                    # choose line to be removed
         if choice > len(lines) - 1 or choice < 0:
@@ -198,7 +195,7 @@ def to_sleep(next_time):
 # function for joining the zoom calls
 def join_calls():
     while True:
-        system('cls')
+        os.system('cls')
         next = next_call()
         if next is None:
             return
@@ -229,20 +226,39 @@ def join_calls():
         sleep(57)                                                               # so the same meeting isn't joined again
 
 
+# create desktop link with icon
+def link():
+    running_dir = os.path.dirname(os.path.abspath(__file__))
+    desktop = winshell.desktop()
+    path = os.path.join(desktop, "Zoom Joiner.lnk")
+    target = running_dir + "\\Zoom-Joiner.py"
+    wDir = running_dir
+    icon = running_dir + "\\icon.ico"
+    shell = Dispatch('WScript.Shell')
+    shortcut = shell.CreateShortCut(path)
+    shortcut.Targetpath = target
+    shortcut.WorkingDirectory = wDir
+    shortcut.IconLocation = icon
+    shortcut.save()
+    print("Shortcut created.\n")
+
+
 print("---------------------------- Zoom Joiner ----------------------------\n")
 
 # start the program
 while True:
-    start = str(input("ENTER : start the program\na : add zoom calls\tr : remove zoom calls\tl : list zoom calls\n>")).lower()
+    start = str(input("ENTER : start the program\na : add zoom calls\tr : remove zoom calls\nl : list zoom calls\td: create desktop link\n>")).lower()
     if start == "a":
         add_lecture()
-        system('cls')
+        os.system('cls')
     elif start == "r":
         remove_calls()
-        system('cls')
+        os.system('cls')
     elif start == "l":
         list_data()
         print("")
+    elif start == "d":
+        link()
     elif start == "exit":
         break
     elif start == "":
