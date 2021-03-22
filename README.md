@@ -15,11 +15,13 @@ The script saves the meetings and assumes these are repeated weekly. Joining is 
 
 2)	install python packages via Command Line
 
-	> pip install pywin32 keyboard
+	> pip install pywin32 keyboard winshell
 
 3)	make sure your standard Browser has pop-ups enabled (for opening Zoom via link)
 
 	(should work fine with: Chrome, Brave, Edge)
+
+4)	Download the files "icon.ico" and "Zoom-Joiner.py" and put together in some folder of your choice.
 
 Done! Just open/run the "Zoom-Joiner.py" file with python.
 
