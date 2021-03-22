@@ -1,5 +1,6 @@
-import webbrowser, datetime, keyboard, win32gui, os, winshell
+import webbrowser, keyboard, win32gui, os, winshell
 from time import sleep
+from datetime import datetime
 from win32com.client import Dispatch
 
 
