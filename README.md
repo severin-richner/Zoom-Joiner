@@ -15,7 +15,7 @@ The script saves the meetings and assumes these are repeated weekly. Joining is 
 
 2)	install python packages via Command Line
 
-	> pip install pywin32 keyboard winshell
+	`pip install pywin32 keyboard winshell`
 
 3)	make sure your standard Browser has pop-ups enabled (for opening Zoom via link)
 
