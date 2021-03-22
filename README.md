@@ -21,7 +21,7 @@ The script saves the meetings and assumes these are repeated weekly. Joining is 
 
 	(should work fine with: Chrome, Brave, Edge)
 
-4)	Download the files "icon.ico" and "Zoom-Joiner.py" and put together in some folder of your choice.
+4)	download the files "icon.ico" and "Zoom-Joiner.py" and put together in some folder of your choice
 
 Done! Just open/run the "Zoom-Joiner.py" file with python.
 
