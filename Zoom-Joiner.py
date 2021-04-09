@@ -248,7 +248,7 @@ print("---------------------------- Zoom Joiner ----------------------------\n")
 
 # start the program
 while True:
-    start = str(input("ENTER : start the program\na : add zoom calls\tr : remove zoom calls\nl : list zoom calls\td: create desktop link\n>")).lower()
+    start = str(input("ENTER : start the program\na : add zoom calls\tr : remove zoom calls\nl : list zoom calls\td : create desktop link\n>")).lower()
     if start == "a":
         add_lecture()
         os.system('cls')
