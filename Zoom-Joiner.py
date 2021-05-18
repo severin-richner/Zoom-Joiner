@@ -4,6 +4,7 @@ from datetime import datetime
 from win32com.client import Dispatch
 
 
+
 weekdays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
 
@@ -141,6 +142,19 @@ def remove_calls():
             return
 
 
+# let user select a call from the list and returns that call as a list of it's properties
+def select_call():
+    global weekdays
+    while True:
+        os.system('cls')
+        lines = list_data()
+        choice = int(input("\nChoose a call to join:\n>"))                    # choose line to be removed
+        if choice > len(lines) - 1 or choice < 0:
+            print("This choice is not in range.")
+            continue
+        return lines[choice].split(',')
+
+
 # function returning the next upcoming call as a list with the properties of that call
 def next_call():
     file = open("./zoom-joiner-data.txt", "r")
@@ -193,30 +207,39 @@ def to_sleep(next_time):
     return s_to_sleep + 60 * (60 * h_to_sleep + m_to_sleep - 1)  # -1 because of the s_to_sleep
 
 
-# function for joining the zoom calls
-def join_calls():
+# function for joining the zoom calls,
+# takes argument: either the exact call to join now, or None
+def join_calls(call=None):
+    join_now = False
+    if call is not None:
+        join_now = True
     while True:
         os.system('cls')
-        next = next_call()
-        if next is None:
-            return
+        # join given one the first time
+        if join_now:
+            next_c = call
+        else:
+            next_c = next_call()
+            if next is None:
+                return
 
-        print(f"Next call is:\t{next[0]} at {next[1]}")
+        if not join_now:
+            print(f"Next call is:\t{next_c[0]} at {next_c[1]}")
 
-        # sleep until then in intervals in case the program got interrupted
-        while True:
-            sl = to_sleep(next[1])
-            if sl > 15:
-                sleep(15)
-            else:
-                if sl < 1:
+            # sleep until then in intervals in case the program got interrupted
+            while True:
+                sl = to_sleep(next_c[1])
+                if sl > 15:
+                    sleep(15)
+                else:
+                    if sl < 1:
+                        break
+                    sleep(sl)
                     break
-                sleep(sl)
-                break
 
         print("Joining... (Intervention with keyboard/mouse can lead to problems.)\n\a")
         wb = webbrowser.get()
-        wb.open_new(next[3])
+        wb.open_new(next_c[3])
         res = focus_on("Launch Meeting - Zoom")
         if res == 0:
             sleep(61)
@@ -224,6 +247,8 @@ def join_calls():
         keyboard.press_and_release('tab')                                       # accept to open in zoom
         keyboard.press_and_release('tab')
         keyboard.press_and_release('enter')
+        # no immediate join after the first one
+        join_now = False
         sleep(57)                                                               # so the same meeting isn't joined again
 
 
@@ -248,7 +273,7 @@ print("---------------------------- Zoom Joiner ----------------------------\n")
 
 # start the program
 while True:
-    start = str(input("ENTER : start the program\na : add zoom calls\tr : remove zoom calls\nl : list zoom calls\td : create desktop link\n>")).lower()
+    start = str(input("ENTER : start the program\na : add zoom calls\tr : remove zoom calls\tl : list zoom calls\nd : create desktop link\tj : join specific call\n>")).lower()
     if start == "a":
         add_lecture()
         os.system('cls')
@@ -260,6 +285,9 @@ while True:
         print("")
     elif start == "d":
         link()
+    elif start == "j":
+        join_calls(select_call())
+        break
     elif start == "exit":
         break
     elif start == "":
