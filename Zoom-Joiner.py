@@ -273,7 +273,7 @@ print("---------------------------- Zoom Joiner ----------------------------\n")
 
 # start the program
 while True:
-    start = str(input("ENTER : start the program\na : add zoom calls\tr : remove zoom calls\tl : list zoom calls\nd : create desktop link\tj : join specific call\n>")).lower()
+    start = str(input("ENTER : start the program\na : add zoom calls\nr : remove zoom calls\nl : list zoom calls\nd : create desktop link\nj : join specific call\n>")).lower()
     if start == "a":
         add_lecture()
         os.system('cls')
@@ -284,6 +284,7 @@ while True:
         list_data()
         print("")
     elif start == "d":
+        os.system('cls')
         link()
     elif start == "j":
         join_calls(select_call())
@@ -293,3 +294,5 @@ while True:
     elif start == "":
         join_calls()
         break
+    else:
+        os.system('cls')
