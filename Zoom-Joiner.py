@@ -1,24 +1,25 @@
-import webbrowser, keyboard, win32gui, os, winshell
+from winshell import desktop
+from os import system, path as ospath
+from win32gui import GetWindowText, EnumWindows, ShowWindow, SetForegroundWindow
+from keyboard import press, release, press_and_release
+from webbrowser import get as wbget
 from time import sleep
 from datetime import datetime
 from win32com.client import Dispatch
 
-
-
 weekdays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-
 
 # helper function for find_starting_with
 def handler(handle, window_list):
-    name = win32gui.GetWindowText(handle)
-    if str(name) != "":                                                  # populate the list
+    name = GetWindowText(handle)
+    if str(name) != "":                                             # populate the list
         window_list.append((handle, name))
 
 
 # finds a window, which name starts with the given String
 def find_starting_with(window_name):
     window_list = []
-    win32gui.EnumWindows(handler, window_list)                      # process all windows by the handler
+    EnumWindows(handler, window_list)                               # process all windows by the handler
 
     for w in window_list:
         if str(w[1]).startswith(window_name):                       # found, matching start
@@ -33,16 +34,16 @@ def focus_on(name):
     while True:                                                     # search until found
         count += 1
         w = find_starting_with(name)
-        keyboard.press('alt')
+        press('alt')
         sleep(0.2)
-        keyboard.press_and_release('tab')
-        keyboard.release('alt')
+        press_and_release('tab')
+        release('alt')
         if w != 0:
             try:
-                win32gui.ShowWindow(w, 6)
-                win32gui.ShowWindow(w, 9)
+                ShowWindow(w, 6)
+                ShowWindow(w, 9)
                 sleep(4)
-                win32gui.SetForegroundWindow(w)
+                SetForegroundWindow(w)
                 return 1
             except Exception as e:
                 print(e)
@@ -70,7 +71,7 @@ def sort_file():
 def add_lecture():
     global weekdays
     while True:
-        os.system('cls')
+        system('cls')
         join_name = input("Name of the lecture/meeting:\n>")
         if len(join_name) > 30:
             print("Name is too long.\n")
@@ -105,7 +106,7 @@ def add_lecture():
 
 # lists data and returns a list with the lines
 def list_data():
-    os.system('cls')
+    system('cls')
     f = open("./zoom-joiner-data.txt", "r")
     lines = f.readlines()
     f.close()
@@ -124,7 +125,7 @@ def list_data():
 def remove_calls():
     global weekdays
     while True:
-        os.system('cls')
+        system('cls')
         lines = list_data()
         choice = int(input("\nChoose a call to delete:\n>"))                    # choose line to be removed
         if choice > len(lines) - 1 or choice < 0:
@@ -146,7 +147,7 @@ def remove_calls():
 def select_call():
     global weekdays
     while True:
-        os.system('cls')
+        system('cls')
         lines = list_data()
         choice = int(input("\nChoose a call to join:\n>"))                    # choose line to be removed
         if choice > len(lines) - 1 or choice < 0:
@@ -214,7 +215,7 @@ def join_calls(call=None):
     if call is not None:
         join_now = True
     while True:
-        os.system('cls')
+        system('cls')
         # join given one the first time
         if join_now:
             next_c = call
@@ -238,15 +239,15 @@ def join_calls(call=None):
                     break
 
         print("Joining... (Intervention with keyboard/mouse can lead to problems.)\n\a")
-        wb = webbrowser.get()
+        wb = wbget()
         wb.open_new(next_c[3])
         res = focus_on("Launch Meeting - Zoom")
         if res == 0:
             sleep(61)
             continue
-        keyboard.press_and_release('tab')                                       # accept to open in zoom
-        keyboard.press_and_release('tab')
-        keyboard.press_and_release('enter')
+        press_and_release('tab')                                       # accept to open in zoom
+        press_and_release('tab')
+        press_and_release('enter')
         # no immediate join after the first one
         join_now = False
         sleep(57)                                                               # so the same meeting isn't joined again
@@ -254,9 +255,9 @@ def join_calls(call=None):
 
 # create desktop link with icon
 def link():
-    running_dir = os.path.dirname(os.path.abspath(__file__))
-    desktop = winshell.desktop()
-    path = os.path.join(desktop, "Zoom Joiner.lnk")
+    running_dir = ospath.dirname(ospath.abspath(__file__))
+    desk = desktop()
+    path = ospath.join(desk, "Zoom Joiner.lnk")
     target = running_dir + "\\Zoom-Joiner.py"
     wDir = running_dir
     icon = running_dir + "\\icon.ico"
@@ -276,15 +277,15 @@ while True:
     start = str(input("ENTER : start the program\na : add zoom calls\nr : remove zoom calls\nl : list zoom calls\nd : create desktop link\nj : join specific call\n>")).lower()
     if start == "a":
         add_lecture()
-        os.system('cls')
+        system('cls')
     elif start == "r":
         remove_calls()
-        os.system('cls')
+        system('cls')
     elif start == "l":
         list_data()
         print("")
     elif start == "d":
-        os.system('cls')
+        system('cls')
         link()
     elif start == "j":
         join_calls(select_call())
@@ -295,4 +296,4 @@ while True:
         join_calls()
         break
     else:
-        os.system('cls')
+        system('cls')
