@@ -12,26 +12,28 @@ weekdays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", 
 # helper function for find_starting_with
 def handler(handle, window_list):
     name = GetWindowText(handle)
-    if str(name) != "":                                             # populate the list
+    if str(name) != "":
+        # populate the list
         window_list.append((handle, name))
-
 
 # finds a window, which name starts with the given String
 def find_starting_with(window_name):
     window_list = []
-    EnumWindows(handler, window_list)                               # process all windows by the handler
+    # process all windows by the handler
+    EnumWindows(handler, window_list)
 
     for w in window_list:
-        if str(w[1]).startswith(window_name):                       # found, matching start
+        if str(w[1]).startswith(window_name):
+            # found, matching start
             return w[0]
-
-    return 0                                                        # not found
-
+    # not found
+    return 0
 
 # function for setting focus on a window
 def focus_on(name):
     count = 0
-    while True:                                                     # search until found
+    # search until found
+    while True:
         count += 1
         w = find_starting_with(name)
         press('alt')
@@ -53,7 +55,6 @@ def focus_on(name):
             return 0
         sleep(0.5)
 
-
 # sorts the data file by day / time
 def sort_file():
     f = open("./zoom-joiner-data.txt", "r")
@@ -65,7 +66,6 @@ def sort_file():
         if l != "\n":
             f.write(l)
     f.close()
-
 
 # function to add lectures to the file
 def add_lecture():
@@ -103,7 +103,6 @@ def add_lecture():
         if more == 0:
             return
 
-
 # lists data and returns a list with the lines
 def list_data():
     system('cls')
@@ -111,15 +110,16 @@ def list_data():
     lines = f.readlines()
     f.close()
     i = 0
-    for l in lines:                                                             # display line by line
+    # display line by line
+    for l in lines:
         split_l = l.split(',')
         padding = ""
-        for j in range(30 - len(split_l[0])):                                   # add padding
+        for j in range(30 - len(split_l[0])):
+            # add padding
             padding += " "
         print(f"{i}:\t{split_l[0] + padding}{split_l[1]}\t{weekdays[int(split_l[2])]}")
         i += 1
     return lines
-
 
 # function to remove calls
 def remove_calls():
@@ -127,12 +127,14 @@ def remove_calls():
     while True:
         system('cls')
         lines = list_data()
-        choice = int(input("\nChoose a call to delete:\n>"))                    # choose line to be removed
+        choice = int(input("\nChoose a call to delete:\n>"))
+        # choose line to be removed
         if choice > len(lines) - 1 or choice < 0:
             print("This choice is not in range.")
             continue
         f = open("./zoom-joiner-data.txt", "w")
-        for i in range(len(lines)):                                             # write back to file
+        for i in range(len(lines)):
+            # write back to file
             if i == choice:
                 continue
             f.write(lines[i])
@@ -142,19 +144,18 @@ def remove_calls():
         if more == 0:
             return
 
-
 # let user select a call from the list and returns that call as a list of it's properties
 def select_call():
     global weekdays
     while True:
         system('cls')
         lines = list_data()
-        choice = int(input("\nChoose a call to join:\n>"))                    # choose line to be removed
+        # choose line to join call
+        choice = int(input("\nChoose a call to join:\n>"))
         if choice > len(lines) - 1 or choice < 0:
             print("This choice is not in range.")
             continue
         return lines[choice].split(',')
-
 
 # function returning the next upcoming call as a list with the properties of that call
 def next_call():
@@ -166,7 +167,8 @@ def next_call():
     current_day = int(datetime.today().weekday())
 
     calls_today = list()
-    for c in calls:                                             # sort out calls that are coming up today
+    # sort out calls that are coming up today
+    for c in calls:
         if c == "\n":
             continue
         this_call = c.split(",")
@@ -183,33 +185,35 @@ def next_call():
 
     next_c = calls_today[0]
     for c in calls_today:
-        if int(c[1][:2]) < int(next_c[1][:2]):           # earlier hour
+        if int(c[1][:2]) < int(next_c[1][:2]):
+            # earlier hour
             next_c = c
         elif int(c[1][:2]) == int(next_c[1][:2]) and \
-                int(c[1][3:]) < int(next_c[1][3:]):        # same hour, earlier min
+                int(c[1][3:]) < int(next_c[1][3:]):
+            # same hour, earlier min
             next_c = c
 
     return next_c
-
 
 # calculates how long to sleep until the next meeting starts
 def to_sleep(next_time):
     now = datetime.now().strftime("%H:%M:%S")
     h_to_sleep = int(next_time[:2]) - int(now[:2])
     if h_to_sleep < 0:
-        return 0                                                # late entry, hour missed
+        # late entry, hour missed
+        return 0
     if int(next_time[3:]) >= int(now[3:5]):
         m_to_sleep = int(next_time[3:]) - int(now[3:5])
     else:
-        if h_to_sleep == 0:                                     # late entry, same hour, minutes missed
+        if h_to_sleep == 0:
+            # late entry, same hour, minutes missed
             return 0
         m_to_sleep = int(next_time[3:]) + 60 - int(now[3:5])
     s_to_sleep = 60 - int(now[6:])
-    return s_to_sleep + 60 * (60 * h_to_sleep + m_to_sleep - 1)  # -1 because of the s_to_sleep
+    # -1 because of the s_to_sleep
+    return s_to_sleep + 60 * (60 * h_to_sleep + m_to_sleep - 1) 
 
-
-# function for joining the zoom calls,
-# takes argument: either the exact call to join now, or None
+# function for joining the zoom calls, takes argument: either the exact call to join now, or None
 def join_calls(call=None):
     join_now = False
     if call is not None:
@@ -226,7 +230,6 @@ def join_calls(call=None):
 
         if not join_now:
             print(f"Next call is:\t{next_c[0]} at {next_c[1]}")
-
             # sleep until then in intervals in case the program got interrupted
             while True:
                 sl = to_sleep(next_c[1])
@@ -245,13 +248,14 @@ def join_calls(call=None):
         if res == 0:
             sleep(61)
             continue
-        press_and_release('tab')                                       # accept to open in zoom
+        # accept to open in zoom
+        press_and_release('tab')
         press_and_release('tab')
         press_and_release('enter')
         # no immediate join after the first one
         join_now = False
-        sleep(57)                                                               # so the same meeting isn't joined again
-
+        # so the same meeting isn't joined again
+        sleep(57)
 
 # create desktop link with icon
 def link():
@@ -269,31 +273,31 @@ def link():
     shortcut.save()
     print("Shortcut created.\n")
 
+if __name__ == "__main__":
+    print("---------------------------- Zoom Joiner ----------------------------\n")
 
-print("---------------------------- Zoom Joiner ----------------------------\n")
-
-# start the program
-while True:
-    start = str(input("ENTER : start the program\na : add zoom calls\nr : remove zoom calls\nl : list zoom calls\nd : create desktop link\nj : join specific call\n>")).lower()
-    if start == "a":
-        add_lecture()
-        system('cls')
-    elif start == "r":
-        remove_calls()
-        system('cls')
-    elif start == "l":
-        list_data()
-        print("")
-    elif start == "d":
-        system('cls')
-        link()
-    elif start == "j":
-        join_calls(select_call())
-        break
-    elif start == "exit":
-        break
-    elif start == "":
-        join_calls()
-        break
-    else:
-        system('cls')
+    # start the program
+    while True:
+        start = str(input("ENTER : start the program\na : add zoom calls\nr : remove zoom calls\nl : list zoom calls\nd : create desktop link\nj : join specific call\n>")).lower()
+        if start == "a":
+            add_lecture()
+            system('cls')
+        elif start == "r":
+            remove_calls()
+            system('cls')
+        elif start == "l":
+            list_data()
+            print("")
+        elif start == "d":
+            system('cls')
+            link()
+        elif start == "j":
+            join_calls(select_call())
+            break
+        elif start == "exit":
+            break
+        elif start == "":
+            join_calls()
+            break
+        else:
+            system('cls')
