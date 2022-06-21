@@ -78,30 +78,30 @@ def add_lecture():
             continue
         elif len(join_name) == 0:
             continue
-
-        while True:
-            join_time = input("Time (\"hh:mm\", 24h clock) to join the zoom call:\n>")
-            if len(join_time) != 5:
-                print("Time has wrong format.\n")
-                continue
+        else:
             break
 
-        while True:
-            join_day = input(f"Select weekday: ({weekdays[0]}:0, {weekdays[1]}:1, {weekdays[2]}:2, {weekdays[3]}:3, {weekdays[4]}:4, {weekdays[5]}:5, {weekdays[6]}:6)\n>")
-            if not (join_day in ['0', '1', '2', '3', '4', '5', '6']):
-                print("Select the day using the given numbers.\n")
-                continue
-            break
+    while True:
+        join_time = input("Time (\"hh:mm\", 24h clock) to join the zoom call:\n>")
+        if len(join_time) != 5:
+            print("Time has wrong format.\n")
+            continue
+        break
 
-        join_link = input("Paste the Zoom link here:\n>")
-        file = open("./zoom-joiner-data.txt", "a")
-        file.write(f"{join_name},{join_time},{join_day},{join_link}\n")
-        file.close()
-        sort_file()
-        print(f"Added zoom call \"{join_name}\".")
-        more = int(input("\nAdd more zoom calls? (1/0)\n>"))
-        if more == 0:
-            return
+    while True:
+        join_day = int(input(f"Select weekday: ({weekdays[0]}:0, {weekdays[1]}:1, {weekdays[2]}:2, {weekdays[3]}:3, {weekdays[4]}:4, {weekdays[5]}:5, {weekdays[6]}:6)\n>"))
+        if not (join_day in range(7)):
+            print("Select the day using the given numbers.\n")
+            continue
+        break
+
+    join_link = input("Paste the Zoom link here:\n>")
+    file = open("./zoom-joiner-data.txt", "a")
+    file.write(f"{join_name},{join_time},{join_day},{join_link}\n")
+    file.close()
+    sort_file()
+    print(f"Added zoom call \"{join_name}\".")
+    return
 
 # lists data and returns a list with the lines
 def list_data():
@@ -132,17 +132,18 @@ def remove_calls():
         if choice > len(lines) - 1 or choice < 0:
             print("This choice is not in range.")
             continue
-        f = open("./zoom-joiner-data.txt", "w")
-        for i in range(len(lines)):
-            # write back to file
-            if i == choice:
-                continue
-            f.write(lines[i])
-        f.close()
-        print(f"Removed zoom call.")
-        more = int(input("\nRemove more zoom calls? (1/0)\n>"))
-        if more == 0:
-            return
+        else:
+            break
+
+    f = open("./zoom-joiner-data.txt", "w")
+    for i in range(len(lines)):
+        # write back to file
+        if i == choice:
+            continue
+        f.write(lines[i])
+    f.close()
+    print(f"Removed zoom call.")
+    return 
 
 # let user select a call from the list and returns that call as a list of it's properties
 def select_call():
